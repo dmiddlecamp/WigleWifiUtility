@@ -74,5 +74,11 @@ namespace wifiLogReader
         }
 
 
+
+        public static bool IsCrazyDouble(double val)
+        {
+            return (Double.IsNaN(val) || double.IsInfinity(val));
+        }
+
     }
 }

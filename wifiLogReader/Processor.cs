@@ -44,6 +44,10 @@ namespace wifiLogReader
 
                 var closest = PickBestObservation(net, true);
                 var furthest = PickBestObservation(net, false);
+                if ((closest == null) || (furthest == null))
+                {
+                    continue;
+                }
 
                 var closestPT = closest.GetPoint();
                 var furthestPT = furthest.GetPoint();
@@ -71,9 +75,11 @@ namespace wifiLogReader
                 for (int a = 0; a < net.Observations.Count; a++)
                 {
                     var obv = net.Observations[a];
-                    var pt = new Coordinate(obv.lon, obv.lat);
-                    //pt.UserData = obv;
-                    points.Add(pt);
+
+                    var pt = obv.GetPoint();
+                    if (pt == null) { continue; }
+
+                    points.Add(pt.Coordinate);
                 }
 
                 if (points.Count < 3)
@@ -103,6 +109,11 @@ namespace wifiLogReader
             for (int i = 0; i < networks.Count; i++)
             {
                 var net = networks[i];
+                if (net.Geom == null)
+                {
+                    continue;
+                }
+
                 var atts = new AttributesTable();
                 atts.AddAttribute("ssid", net.ssid);
                 atts.AddAttribute("bssid", net.bssid);
@@ -129,6 +140,8 @@ namespace wifiLogReader
             for (int a = 0; a < net.Observations.Count; a++)
             {
                 var obv = net.Observations[a];
+                if (!obv.HasPoint()) { continue; }
+                
                 if (bestObv == null) { bestObv = obv; }
 
                 if (obv.accuracy < bestObv.accuracy)
@@ -180,7 +193,7 @@ namespace wifiLogReader
                 atts.AddAttribute("level", bestObv.level);
 
 
-                var f = new Feature(new Point(bestObv.lat, bestObv.lon), atts);
+                var f = new Feature(bestObv.GetPoint(), atts);
                 features.Add(f);
             }
 

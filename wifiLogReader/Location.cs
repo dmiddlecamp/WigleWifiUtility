@@ -18,8 +18,18 @@ namespace wifiLogReader
         public double accuracy;
         public long time;
 
+        public bool HasPoint()
+        {
+            return !(Utilities.IsCrazyDouble(this.lat) || Utilities.IsCrazyDouble(this.lon));
+        }
+
         public IPoint GetPoint()
         {
+            if (Utilities.IsCrazyDouble(this.lat) || Utilities.IsCrazyDouble(this.lon))
+            {
+                return null;
+            }
+
             return new Point(this.lat, this.lon);
         }
 
