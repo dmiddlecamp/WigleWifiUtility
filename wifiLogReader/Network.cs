@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NetTopologySuite.Geometries;
+using GeoAPI.Geometries;
 
 namespace wifiLogReader
 {   
@@ -16,6 +17,6 @@ namespace wifiLogReader
 
         public List<Location> Observations;
 
-        public Geometry Ring;
+        public IGeometry Geom;
     }
 }

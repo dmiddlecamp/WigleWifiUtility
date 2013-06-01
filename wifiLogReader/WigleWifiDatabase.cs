@@ -93,7 +93,6 @@ namespace wifiLogReader
                     Console.WriteLine(string.Format("Importing Locations, {0}% done...", progress));
                     //_log.InfoFormat("Importing Locations, {0}% done...", progress);
                 }
-
             }
 
 

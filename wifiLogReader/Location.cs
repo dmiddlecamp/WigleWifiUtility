@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using GeoAPI.Geometries;
+using NetTopologySuite.Geometries;
 
 namespace wifiLogReader
 {
@@ -15,6 +17,12 @@ namespace wifiLogReader
         public double altitude;
         public double accuracy;
         public long time;
+
+        public IPoint GetPoint()
+        {
+            return new Point(this.lat, this.lon);
+        }
+
     }
 
 
