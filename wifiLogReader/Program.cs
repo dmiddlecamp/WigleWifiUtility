@@ -20,7 +20,7 @@ namespace wifiLogReader
             var d = new WigleWifiDatabase(databaseFileName);
 
             //just use manual values for now?
-            d.IgnoreUnder(1000);
+            d.IgnoreAbove(1000);
 
             //Read in our location / network tables
             var networks = d.ImportFile();
@@ -57,6 +57,11 @@ namespace wifiLogReader
             p.SetGeomAsCenteredRing(networks);
             networkFeatures = p.GetNetworksAsFeatures(networks);
             System.IO.File.WriteAllText("network_centered.geojson", writer.Write(networkFeatures));
+
+            //try centering the network around the closest and furthest observation
+            p.SetGeomAsMinimumCircle(networks);
+            networkFeatures = p.GetNetworksAsFeatures(networks);
+            System.IO.File.WriteAllText("network_minspan75.geojson", writer.Write(networkFeatures));
 
 
 

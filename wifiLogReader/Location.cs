@@ -30,7 +30,7 @@ namespace wifiLogReader
                 return null;
             }
 
-            return new Point(this.lat, this.lon);
+            return new Point(this.lon, this.lat);
         }
 
     }

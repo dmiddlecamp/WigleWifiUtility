@@ -22,7 +22,7 @@ namespace wifiLogReader
             this.databaseFileName = databaseFileName;
         }
 
-        internal void IgnoreUnder(double upperLimit)
+        internal void IgnoreAbove(double upperLimit)
         {
             this.accuracyUpperLimit = upperLimit;
         }

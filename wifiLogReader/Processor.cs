@@ -11,7 +11,34 @@ namespace wifiLogReader
 {
     public class Processor
     {
+        public void SetGeomAsMinimumCircle(List<Network> networks)
+        {
+            int numSkipped = 0;
 
+            //so... we have tons of observations for any given network.
+            for (int i = 0; i < networks.Count; i++)
+            {
+                var net = networks[i];
+                if (net.Observations.Count == 0)
+                {
+                    //TODO: Fix -- cell towers
+                    continue;
+                }
+
+                net.Geom = MinimumSpanningCircle(net, 0.75, 0.005);
+
+                if (net.Geom != null)
+                {
+                    //if (net.Geom.Area > 0.05)
+                    //{
+                    //    numSkipped++;
+                    //    net.Geom = null;
+                    //    continue;
+                    //}
+                }
+            }
+            Console.WriteLine("SKipped " + numSkipped + " circles ");
+        }
 
         public void SetGeomAsCenteredRing(List<Network> networks)
         {
@@ -53,10 +80,22 @@ namespace wifiLogReader
                 var furthestPT = furthest.GetPoint();
                 var dist = closestPT.Distance(furthestPT);
 
+                if (dist > 0.005)
+                {
+                    //too big
+                    continue;
+                }
+
                 //draw circle.
-                var fact = new NetTopologySuite.Utilities.GeometricShapeFactory();
+                var fact = new NetTopologySuite.Utilities.GeometricShapeFactory( GeometryFactory.Default);
+                var pt = closestPT;
+                var env = new Envelope(pt.X + dist, pt.X - dist, pt.Y + dist, pt.Y - dist);
+
+                fact.Envelope = env;
+                
                 fact.Centre = closestPT.Coordinate;
-                fact.Width = dist;
+                fact.NumPoints = 24;
+                fact.Size = dist;
                 net.Geom = fact.CreateCircle();
 
             }
@@ -120,6 +159,7 @@ namespace wifiLogReader
                 atts.AddAttribute("capabilities", net.capabilities);
                 atts.AddAttribute("type", net.type);
                 atts.AddAttribute("frequency", net.frequency);
+                atts.AddAttribute("AREA", net.Geom.Area);
 
                 if (hulls)
                 {
@@ -133,6 +173,46 @@ namespace wifiLogReader
             return new FeatureCollection(new Collection<Feature>(features));
         }
 
+        public IGeometry MinimumSpanningCircle(Network net, double percentile, double maxDist)
+        {
+            //get all obvs, sort by accuracy (best to worst (asc))
+            //grab XX percentile of points
+
+            var bestObv = PickBestObservation(net, true);
+            if (bestObv == null)
+            {
+                return null;
+            }
+            var centerPt = bestObv.GetPoint();
+
+            var ordered = net.Observations.OrderBy(o => o.accuracy).ToList();
+            
+            var maxCount = ordered.Count() * percentile;
+            var points = new List<Coordinate>();
+            for (int a = 0; a < maxCount; a++)
+            {
+                var obv = ordered[a];
+                if (!obv.HasPoint()) { continue; }
+
+                var pt = obv.GetPoint();
+                if (pt.Distance(centerPt) > maxDist)
+                    continue;
+
+                points.Add(pt.Coordinate);
+            }
+
+            if (points.Count > 3)
+            {
+                points.Add(points[0]);  //close it
+            }
+            else { return null; }
+
+            var poly = new Polygon(new LinearRing(points.ToArray()));
+
+            var c = new NetTopologySuite.Algorithm.MinimumBoundingCircle(poly);
+            return c.GetCircle();
+        }
+
 
         public Location PickBestObservation(Network net, bool closest = true)
         {
@@ -143,7 +223,9 @@ namespace wifiLogReader
                 if (!obv.HasPoint()) { continue; }
                 
                 if (bestObv == null) { bestObv = obv; }
-
+                /**
+                 * I think there is something wrong here, hard to describe
+                 */
                 if (obv.accuracy < bestObv.accuracy)
                 {
                     if (closest)
@@ -201,5 +283,7 @@ namespace wifiLogReader
         }
 
 
+
+      
     }
 }
