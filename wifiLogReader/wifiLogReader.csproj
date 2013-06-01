@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C60087F1-8A81-47B2-B373-A714806A51D1}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>wifiLogReader</RootNamespace>
+    <AssemblyName>wifiLogReader</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DotSpatial.Projections">
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\DotSpatial.Projections.dll</HintPath>
+    </Reference>
+    <Reference Include="DotSpatial.Projections.Wrapper">
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\DotSpatial.Projections.Wrapper.dll</HintPath>
+    </Reference>
+    <Reference Include="GeoAPI">
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\GeoAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\libs\log4net-1.2.11\bin\net\2.0\release\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\Microsoft.SqlServer.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Security">
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\Mono.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="NetTopologySuite">
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\NetTopologySuite.dll</HintPath>
+    </Reference>
+    <Reference Include="NetTopologySuite.IO">
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\NetTopologySuite.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="NetTopologySuite.IO.GDB">
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\NetTopologySuite.IO.GDB.dll</HintPath>
+    </Reference>
+    <Reference Include="NetTopologySuite.IO.GeoJSON">
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\NetTopologySuite.IO.GeoJSON.dll</HintPath>
+    </Reference>
+    <Reference Include="NetTopologySuite.IO.GeoTools">
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\NetTopologySuite.IO.GeoTools.dll</HintPath>
+    </Reference>
+    <Reference Include="NetTopologySuite.IO.MsSqlSpatial">
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\NetTopologySuite.IO.MsSqlSpatial.dll</HintPath>
+    </Reference>
+    <Reference Include="NetTopologySuite.IO.PostGis">
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\NetTopologySuite.IO.PostGis.dll</HintPath>
+    </Reference>
+    <Reference Include="NetTopologySuite.IO.ShapeFile">
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\NetTopologySuite.IO.ShapeFile.dll</HintPath>
+    </Reference>
+    <Reference Include="NetTopologySuite.IO.SpatiaLite">
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\NetTopologySuite.IO.SpatiaLite.dll</HintPath>
+    </Reference>
+    <Reference Include="NetTopologySuite.IO.SqlServer2008">
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\NetTopologySuite.IO.SqlServer2008.dll</HintPath>
+    </Reference>
+    <Reference Include="NetTopologySuite.IO.Tests">
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\NetTopologySuite.IO.Tests.dll</HintPath>
+    </Reference>
+    <Reference Include="NetTopologySuite.TestRunner">
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\NetTopologySuite.TestRunner.dll</HintPath>
+    </Reference>
+    <Reference Include="NetTopologySuite.Tests.NUnit">
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\NetTopologySuite.Tests.NUnit.dll</HintPath>
+    </Reference>
+    <Reference Include="NetTopologySuite.Tests.Vivid.XUnit">
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\NetTopologySuite.Tests.Vivid.XUnit.dll</HintPath>
+    </Reference>
+    <Reference Include="NetTopologySuite.Windows.Forms">
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\NetTopologySuite.Windows.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="NetTopologySuite.Windows.Media">
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\NetTopologySuite.Windows.Media.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\libs\jsonnet\Net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Npgsql">
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\Npgsql.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.1.12217, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.mocks, Version=2.6.1.12217, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\nunit.mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="pnunit.framework, Version=1.0.4433.35729, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\pnunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="PowerCollections">
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\PowerCollections.dll</HintPath>
+    </Reference>
+    <Reference Include="ProjNet">
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\ProjNet.dll</HintPath>
+    </Reference>
+    <Reference Include="QuickGraph">
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\QuickGraph.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite, Version=1.0.60.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite.Linq">
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\System.Data.SQLite.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Test.NetTopologySuite.Windows.Forms">
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\Test.NetTopologySuite.Windows.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit">
+      <HintPath>..\libs\NetTopologySuite\v4.0\AnyCPU\xunit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Database.cs" />
+    <Compile Include="Utilities.cs" />
+    <Compile Include="WigleWifiDatabase.cs" />
+    <Compile Include="Location.cs" />
+    <Compile Include="Network.cs" />
+    <Compile Include="Processor.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
