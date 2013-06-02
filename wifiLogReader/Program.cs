@@ -74,6 +74,8 @@ namespace wifiLogReader
             p.SetGeomAsMinimumCircle(networks);
             networkFeatures = p.GetNetworksAsFeatures(networks);
             System.IO.File.WriteAllText("network_minspan_001.geojson", writer.Write(networkFeatures));
+            
+            
 
 
             //pull out all our best observations by accuracy and power level

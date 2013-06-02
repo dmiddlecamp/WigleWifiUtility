@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wifiLogReader", "wifiLogReader\wifiLogReader.csproj", "{C60087F1-8A81-47B2-B373-A714806A51D1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sampleLocator", "sampleLocator\sampleLocator.csproj", "{C4748563-EA20-4109-983A-FFEE4A9BB340}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -13,6 +15,10 @@ Global
 		{C60087F1-8A81-47B2-B373-A714806A51D1}.Debug|x86.Build.0 = Debug|x86
 		{C60087F1-8A81-47B2-B373-A714806A51D1}.Release|x86.ActiveCfg = Release|x86
 		{C60087F1-8A81-47B2-B373-A714806A51D1}.Release|x86.Build.0 = Release|x86
+		{C4748563-EA20-4109-983A-FFEE4A9BB340}.Debug|x86.ActiveCfg = Debug|x86
+		{C4748563-EA20-4109-983A-FFEE4A9BB340}.Debug|x86.Build.0 = Debug|x86
+		{C4748563-EA20-4109-983A-FFEE4A9BB340}.Release|x86.ActiveCfg = Release|x86
+		{C4748563-EA20-4109-983A-FFEE4A9BB340}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
