@@ -25,7 +25,8 @@ namespace wifiLogReader
                     continue;
                 }
 
-                net.Geom = MinimumSpanningCircle(net, 0.75, 0.005);
+                //max distance of around 0.001 seems to work well here
+                net.Geom = MinimumSpanningCircle(net, 1, 0.001); 
 
                 if (net.Geom != null)
                 {

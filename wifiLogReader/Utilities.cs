@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data;
 
 namespace wifiLogReader
 {
@@ -79,6 +80,52 @@ namespace wifiLogReader
         {
             return (Double.IsNaN(val) || double.IsInfinity(val));
         }
+
+
+        public static void MergeIntoDatatable(DataTable left, DataTable right)
+        {
+            //lets just assume they have the exact same syntax right now
+            if (left.Columns.Count != right.Columns.Count)
+            {
+                return;
+            }
+
+            int numColumns = left.Columns.Count;
+            //bool leftHasMore = (left.Rows.Count > right.Rows.Count);
+            //var iterTable = (leftHasMore) ? right : left;
+            StringBuilder sb = new StringBuilder(256);
+            HashSet<string> hashes = new HashSet<string>();
+
+
+            for (int i = 0; i < left.Rows.Count; i++)
+            {
+                sb.Length = 0;
+                DataRow row = left.Rows[i];
+                for (int c = 0; c < numColumns; c++)
+                {
+                    sb.Append(row[c]);
+                }
+                hashes.Add(sb.ToString());
+            }
+
+            //var rowsToAdd = new List<DataRow>(1024);
+            for (int i = 0; i < right.Rows.Count; i++)
+            {
+                sb.Length = 0;
+                DataRow row = right.Rows[i];
+                for (int c = 0; c < numColumns; c++)
+                {
+                    sb.Append(row[c]);
+                }
+                if (!hashes.Contains(sb.ToString()))
+                {
+                    //rowsToAdd.Add(row);
+                    left.ImportRow(row);
+                }
+            }
+        }
+
+
 
     }
 }

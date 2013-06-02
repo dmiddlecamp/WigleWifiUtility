@@ -7,23 +7,34 @@ using NetTopologySuite.Features;
 
 namespace wifiLogReader
 {
+    /*
+     * best / worst power levels for bubbles?
+     * steamroller interpolation
+     * 
+     */
+
+
     class Program
     {
         static void Main(string[] args)
         {
             //expecting a database backup from Wigle-Wifi
-            string databaseFileName = @"D:\research\wifidata\backup-1370101505105.sqlite";
+            var databaseFiles = new string[] {
+                @"D:\research\wifidata\backup-1370101505105.sqlite",
+                @"D:\research\wifidata\backup-1370188598005.sqlite"
+            };
+
 
             //open wifi log file
             //load tables into memory
 
-            var d = new WigleWifiDatabase(databaseFileName);
+            var d = new WigleWifiDatabase(databaseFiles);
 
             //just use manual values for now?
             d.IgnoreAbove(1000);
 
             //Read in our location / network tables
-            var networks = d.ImportFile();
+            var networks = d.ImportFiles();
 
 
             //ideas:
@@ -42,7 +53,8 @@ namespace wifiLogReader
             //2.) export to geojson?
             GeoJsonWriter writer = new GeoJsonWriter();
 
-            string workingPath = System.IO.Path.GetDirectoryName(databaseFileName);
+            string primaryDatabaseFile = databaseFiles[0];
+            string workingPath = System.IO.Path.GetDirectoryName(primaryDatabaseFile);
             Environment.CurrentDirectory = workingPath;
 
 
@@ -50,7 +62,7 @@ namespace wifiLogReader
             System.IO.File.WriteAllText("networks_full.geojson", writer.Write(networkFeatures));
 
             networkFeatures = p.GetNetworksAsFeatures(networks, true);
-            System.IO.File.WriteAllText("networks_hulls.geojson",  writer.Write(networkFeatures));
+            System.IO.File.WriteAllText("networks_hulls.geojson", writer.Write(networkFeatures));
 
 
             //try centering the network around the closest and furthest observation
@@ -61,14 +73,15 @@ namespace wifiLogReader
             //try centering the network around the closest and furthest observation
             p.SetGeomAsMinimumCircle(networks);
             networkFeatures = p.GetNetworksAsFeatures(networks);
-            System.IO.File.WriteAllText("network_minspan75.geojson", writer.Write(networkFeatures));
-
+            System.IO.File.WriteAllText("network_minspan_001.geojson", writer.Write(networkFeatures));
 
 
             //pull out all our best observations by accuracy and power level
             //(this is the easiest way to get closest to the actual access point)
             FeatureCollection centroidFeatures = p.GetBestObvFeatures(networks);
             System.IO.File.WriteAllText("centers.geojson", writer.Write(centroidFeatures));
+
+
 
 
         }

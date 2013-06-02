@@ -10,16 +10,16 @@ namespace wifiLogReader
     public class WigleWifiDatabase
     {
         //private static ILog _log = LogManager.GetLogger( System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        protected string databaseFileName;
+        protected string[] databaseFileNames;
         protected double accuracyUpperLimit;
 
 
-        public WigleWifiDatabase(string databaseFileName)
+        public WigleWifiDatabase(string[] databaseFileNames)
         {
 
 
             // TODO: Complete member initialization
-            this.databaseFileName = databaseFileName;
+            this.databaseFileNames = databaseFileNames;
         }
 
         internal void IgnoreAbove(double upperLimit)
@@ -27,23 +27,62 @@ namespace wifiLogReader
             this.accuracyUpperLimit = upperLimit;
         }
 
-
-        public List<Network> ImportFile()
+        public List<Network> ImportFiles()
         {
-            //generate Network objects
+            DataTable networks = null, locations = null;
+            foreach (string databaseFile in this.databaseFileNames)
+            {
+                var networkDT = this.GetNetworksRaw(databaseFile);
+                var locationsDT = this.GetLocationsRaw(databaseFile);
 
-            string connString = string.Format("Data Source={0};Version=3;", this.databaseFileName);
-            Database d = new Database();
-            d.Connect(Database.theDatabaseType.SQLITE, connString);
+                if (networks == null) { networks = networkDT; }
+                else
+                {
+                    Utilities.MergeIntoDatatable(networks, networkDT);                    
+                }
+                if (locations == null) { locations = locationsDT; }
+                else
+                {
+                    Utilities.MergeIntoDatatable(locations, locationsDT);                    
+                }
+            }
+            return ConstructNetworkObjects(networks, locations);
+        }
 
-            //network
+        public DataTable GetNetworksRaw(string databaseFileName)
+        {
             // bssid, ssid, ffrequency, capabilities, type (W, C)
-            var networks = d.RunQuery("select * from network");
+            return QueryDbRaw(databaseFileName, "select * from network");
+        }
+        public DataTable GetLocationsRaw(string databaseFileName)
+        {
+            // bssid, ssid, ffrequency, capabilities, type (W, C)
+            return QueryDbRaw(databaseFileName, string.Format("select * from location where accuracy <= {0}", this.accuracyUpperLimit));
+        }
 
-            //location
-            //id, bssid, level, lat, lon, altitude, accuracy, time
-            var locations = d.RunQuery(string.Format("select * from location where accuracy <= {0}", this.accuracyUpperLimit));
+        public DataTable QueryDbRaw(string databaseFileName, string query)
+        {
+            Database d = new Database();
+            DataTable resultsDT = null;
+            try
+            {
+                string connString = string.Format("Data Source={0};Version=3;", databaseFileName);
+                d.Connect(Database.theDatabaseType.SQLITE, connString);
+                resultsDT = d.RunQuery(query);
+            }
+            catch { }
+            finally
+            {
+                d.Close();
+            }
 
+            return resultsDT;
+        }
+
+
+        public List<Network> ConstructNetworkObjects(DataTable networks, DataTable locations)
+        {
+            
 
             var results = new List<Network>(1024 * 16);
             var dict = new Dictionary<string, Network>();
@@ -94,9 +133,6 @@ namespace wifiLogReader
                     //_log.InfoFormat("Importing Locations, {0}% done...", progress);
                 }
             }
-
-
-            d.Close();
             return results;
         }
 
